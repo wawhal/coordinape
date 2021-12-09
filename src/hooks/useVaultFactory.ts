@@ -1,5 +1,8 @@
 // - Contract Imports
+import { ContractReceipt } from '@ethersproject/contracts';
 import { useWeb3React } from '@web3-react/core';
+
+import { callContract } from 'utils/contractHelpers';
 
 import { useContracts } from './useContracts';
 
@@ -13,41 +16,32 @@ export function useVaultFactory() {
     tokenAddress: string,
     simpleTokenAddress: string,
     type: string
-  ): Promise<IVault> => {
-    try {
-      const signer = await web3Context.library.getSigner();
-      if (contracts) {
-        let factory = contracts.apeVaultFactory;
-        factory = factory.connect(signer);
-        const tx = await factory.createApeVault(
-          tokenAddress,
-          simpleTokenAddress
-        );
-        const receipt = await tx.wait();
-        if (receipt && receipt?.events) {
-          for (const event of receipt.events) {
-            if (event?.event === 'VaultCreated') {
-              const vaultAddress = event.args?.vault;
-              const vault: IVault = {
-                id: vaultAddress,
-                transactions: [],
-                tokenAddress,
-                simpleTokenAddress,
-                type,
-              };
-              return vault;
-            }
+  ): Promise<IVault | undefined> => {
+    const signer = await web3Context.library.getSigner();
+    if (contracts) {
+      const factory = contracts.apeVaultFactory.connect(signer);
+      const receipt: ContractReceipt | any = await callContract(
+        factory.createApeVault(tokenAddress, simpleTokenAddress)
+      );
+      if (receipt && receipt?.events) {
+        for (const event of receipt.events) {
+          if (event?.event === 'VaultCreated') {
+            const vaultAddress = event.args?.vault;
+            const vault: IVault = {
+              id: vaultAddress,
+              transactions: [],
+              tokenAddress,
+              simpleTokenAddress,
+              type,
+            };
+            return vault;
           }
-          console.error('VaultCreated event not found');
         }
+        console.error('VaultCreated event not found');
       }
-    } catch (e: any) {
-      if (e.code === 4001) {
-        throw Error(`Transaction rejected by your wallet`);
-      }
-      throw Error(`Failed to submit create vault.`);
+      throw new Error('Failed to create vault');
     }
-    throw Error(`Failed to create vault.`);
+    throw new Error('No contracts loaded');
   };
 
   return { createApeVault };

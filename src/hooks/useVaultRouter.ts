@@ -1,11 +1,11 @@
 // - Contract Imports
 import { BigNumberish } from '@ethersproject/bignumber';
-import { ContractReceipt } from '@ethersproject/contracts';
+import { ContractReceipt, ContractTransaction } from '@ethersproject/contracts';
 import { useWeb3React } from '@web3-react/core';
 import { Signer } from 'ethers';
 
 import { ERC20Service } from 'services/erc20';
-import { handleContractError } from 'utils/handleContractError';
+import { callContract } from 'utils/contractHelpers';
 
 import { useContracts } from './useContracts';
 
@@ -18,59 +18,41 @@ export function useVaultRouter() {
   const depositToken = async (
     vault: IVault,
     amount: BigNumberish
-  ): Promise<ContractReceipt> => {
-    try {
-      const signer = await web3Context.library.getSigner();
-      const token = new ERC20Service(
-        await web3Context.library,
-        await signer.getAddress(),
-        vault.tokenAddress
-      );
-      if (!contracts) {
-        throw new Error('Contracts not loaded');
-      }
-      // Todo: Handle this separately and conditionally in UI
-      await token.approveUnlimited(contracts.apeRouter.address);
-      // Main logic
-      const apeRouter = contracts.apeRouter.connect(signer);
-      const tx = await apeRouter.delegateDeposit(
-        vault.id,
-        vault.tokenAddress,
-        amount
-      );
-      // Todo: handle this async
-      const receipt = await tx.wait();
-      return receipt;
-    } catch (e: any) {
-      handleContractError(e);
-    }
-    throw Error(`Failed to deposit to the vault.`);
+  ): Promise<ContractReceipt | ContractTransaction> => {
+    if (!contracts) throw new Error('Contracts not loaded');
+    const signer = await web3Context.library.getSigner();
+    const token = new ERC20Service(
+      await web3Context.library,
+      await signer.getAddress(),
+      vault.tokenAddress
+    );
+    await callContract(token.approveUnlimited(contracts.apeRouter.address));
+    const apeRouter = contracts.apeRouter.connect(signer);
+    const receipt = await callContract(
+      apeRouter.delegateDeposit(vault.id, vault.tokenAddress, amount)
+    );
+    return receipt;
   };
 
   const delegateWithdrawal = async (
     vault: IVault,
     shareAmount: BigNumberish,
     underlying: boolean
-  ): Promise<ContractReceipt> => {
+  ): Promise<ContractReceipt | ContractTransaction> => {
     if (!contracts) {
       throw new Error('Contracts not loaded');
     }
-    try {
-      const signer: Signer = await web3Context.library.getSigner();
-      const tx = await contracts.apeRouter.delegateWithdrawal(
+    const signer: Signer = await web3Context.library.getSigner();
+    const receipt = await callContract(
+      contracts.apeRouter.delegateWithdrawal(
         await signer.getAddress(),
         vault.id,
         vault.tokenAddress,
         shareAmount,
         underlying
-      );
-      // Todo: handle this async
-      const receipt = await tx.wait();
-      return receipt;
-    } catch (e: any) {
-      handleContractError(e);
-    }
-    throw Error('Failed to withdraw from the vault.');
+      )
+    );
+    return receipt;
   };
 
   return { depositToken, delegateWithdrawal };
