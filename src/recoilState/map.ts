@@ -181,9 +181,13 @@ export const rMapGraphData = selector<GraphData>({
             `Missing user of circle = ${epoch.circle_id} in rMapGraphData at ${profile.address}`
           );
 
+          const img = getAvatarPathWithFallback(profile.avatar, user.name);
+          // eslint-disable-next-line no-console
+          console.log(user.name, img);
+
           return {
             id: address,
-            img: getAvatarPathWithFallback(profile.avatar, user.name),
+            img,
             profile,
             name: user.name,
             epochId: epoch.id,
