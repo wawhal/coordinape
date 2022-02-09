@@ -6810,6 +6810,14 @@ export const AllTypesProps: Record<string, any> = {
         required: true,
       },
     },
+    upload_image: {
+      object: {
+        type: 'upload_image_input',
+        array: false,
+        arrayRequired: false,
+        required: true,
+      },
+    },
   },
   nominees: {
     nominations: {
@@ -13667,6 +13675,20 @@ export const AllTypesProps: Record<string, any> = {
       required: false,
     },
   },
+  upload_image_input: {
+    image_data: {
+      type: 'String',
+      array: false,
+      arrayRequired: false,
+      required: true,
+    },
+    user_name: {
+      type: 'String',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+  },
   users: {
     burns: {
       distinct_on: {
@@ -16569,6 +16591,7 @@ export const ReturnTypes: Record<string, any> = {
     update_users_by_pk: 'users',
     update_vouches: 'vouches_mutation_response',
     update_vouches_by_pk: 'vouches',
+    upload_image: 'upload_image_response',
   },
   nominees: {
     address: 'String',
@@ -17478,6 +17501,9 @@ export const ReturnTypes: Record<string, any> = {
     recipient_id: 'Float',
     sender_id: 'Float',
     tokens: 'Float',
+  },
+  upload_image_response: {
+    url: 'String',
   },
   users: {
     address: 'String',

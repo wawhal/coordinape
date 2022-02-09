@@ -3181,6 +3181,10 @@ export type ValueTypes = {
       },
       ValueTypes['vouches']
     ];
+    upload_image?: [
+      { object: ValueTypes['upload_image_input'] },
+      ValueTypes['upload_image_response']
+    ];
     __typename?: boolean;
   }>;
   /** columns and relationships of "nominees" */
@@ -6283,6 +6287,14 @@ export type ValueTypes = {
     sender_id?: ValueTypes['order_by'] | null;
     tokens?: ValueTypes['order_by'] | null;
   };
+  ['upload_image_input']: {
+    image_data: string;
+    user_name?: string | null;
+  };
+  ['upload_image_response']: AliasType<{
+    url?: boolean;
+    __typename?: boolean;
+  }>;
   /** columns and relationships of "users" */
   ['users']: AliasType<{
     address?: boolean;
@@ -8455,6 +8467,7 @@ export type ModelTypes = {
     update_vouches?: ModelTypes['vouches_mutation_response'];
     /** update single row of the table: "vouches" */
     update_vouches_by_pk?: ModelTypes['vouches'];
+    upload_image?: ModelTypes['upload_image_response'];
   };
   /** columns and relationships of "nominees" */
   ['nominees']: {
@@ -9831,6 +9844,10 @@ export type ModelTypes = {
   };
   /** order by variance() on columns of table "token_gifts" */
   ['token_gifts_variance_order_by']: GraphQLTypes['token_gifts_variance_order_by'];
+  ['upload_image_input']: GraphQLTypes['upload_image_input'];
+  ['upload_image_response']: {
+    url?: string;
+  };
   /** columns and relationships of "users" */
   ['users']: {
     address: string;
@@ -12524,6 +12541,7 @@ export type GraphQLTypes = {
     update_vouches?: GraphQLTypes['vouches_mutation_response'];
     /** update single row of the table: "vouches" */
     update_vouches_by_pk?: GraphQLTypes['vouches'];
+    upload_image?: GraphQLTypes['upload_image_response'];
   };
   /** columns and relationships of "nominees" */
   ['nominees']: {
@@ -14758,6 +14776,14 @@ export type GraphQLTypes = {
     recipient_id?: GraphQLTypes['order_by'];
     sender_id?: GraphQLTypes['order_by'];
     tokens?: GraphQLTypes['order_by'];
+  };
+  ['upload_image_input']: {
+    image_data: string;
+    user_name?: string;
+  };
+  ['upload_image_response']: {
+    __typename: 'upload_image_response';
+    url?: string;
   };
   /** columns and relationships of "users" */
   ['users']: {

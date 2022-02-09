@@ -45,3 +45,18 @@ type createUserResponse {
   starting_tokens: Int!
 }
 
+
+type Mutation {
+  upload_image(
+    object: upload_image_input!
+  ): upload_image_response
+}
+
+input upload_image_input {
+  user_name: String
+  image_data: String!
+}
+
+type upload_image_response {
+  url: String
+}

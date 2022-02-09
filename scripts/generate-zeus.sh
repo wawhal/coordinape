@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
-
+set -x
+set -v
 set -o allexport
 # shellcheck source=../.env
 source .env

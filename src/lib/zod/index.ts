@@ -39,6 +39,10 @@ export const circleIdInput = z
   })
   .strip();
 
+export const updateProfileAvatarInput = z
+  .object({image_data_base64: z.string(),
+  }).strict();
+
 export const HasuraAdminSessionVariables = z
   .object({
     'x-hasura-role': z.literal('admin'),
@@ -103,3 +107,4 @@ export function composeHasuraActionRequestBodyWithSession<
     request_query: z.string(),
   });
 }
+
