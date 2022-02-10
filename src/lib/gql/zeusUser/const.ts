@@ -3277,6 +3277,14 @@ export const AllTypesProps: Record<string, any> = {
         required: true,
       },
     },
+    update_profile_avatar: {
+      object: {
+        type: 'update_profile_avatar_input',
+        array: false,
+        arrayRequired: false,
+        required: true,
+      },
+    },
     update_profiles: {
       _set: {
         type: 'profiles_set_input',
@@ -6967,6 +6975,14 @@ export const AllTypesProps: Record<string, any> = {
       required: false,
     },
   },
+  update_profile_avatar_input: {
+    image_data: {
+      type: 'String',
+      array: false,
+      arrayRequired: false,
+      required: true,
+    },
+  },
   users: {
     burns: {
       distinct_on: {
@@ -8517,6 +8533,7 @@ export const ReturnTypes: Record<string, any> = {
     create_circle: 'create_circle_response',
     update_circles: 'circles_mutation_response',
     update_circles_by_pk: 'circles',
+    update_profile_avatar: 'update_profile_avatar_output',
     update_profiles: 'profiles_mutation_response',
     update_profiles_by_pk: 'profiles',
   },
@@ -8782,6 +8799,9 @@ export const ReturnTypes: Record<string, any> = {
     recipient_id: 'Float',
     sender_id: 'Float',
     tokens: 'Float',
+  update_profile_avatar_output: {
+    profile: 'profiles',
+    profile_id: 'Int',
   },
   users: {
     address: 'String',

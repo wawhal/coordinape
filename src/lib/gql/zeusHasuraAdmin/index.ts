@@ -3061,6 +3061,10 @@ export type ValueTypes = {
       },
       ValueTypes['personal_access_tokens']
     ];
+    update_profile_avatar?: [
+      { object: ValueTypes['update_profile_avatar_input'] },
+      ValueTypes['update_profile_avatar_output']
+    ];
     update_profiles?: [
       {
         /** increments the numeric columns with given value of the filtered values */
@@ -3180,10 +3184,6 @@ export type ValueTypes = {
         pk_columns: ValueTypes['vouches_pk_columns_input'];
       },
       ValueTypes['vouches']
-    ];
-    upload_image?: [
-      { object: ValueTypes['upload_image_input'] },
-      ValueTypes['upload_image_response']
     ];
     __typename?: boolean;
   }>;
@@ -6287,12 +6287,13 @@ export type ValueTypes = {
     sender_id?: ValueTypes['order_by'] | null;
     tokens?: ValueTypes['order_by'] | null;
   };
-  ['upload_image_input']: {
+  ['update_profile_avatar_input']: {
     image_data: string;
-    user_name?: string | null;
   };
-  ['upload_image_response']: AliasType<{
-    url?: boolean;
+  ['update_profile_avatar_output']: AliasType<{
+    /** An object relationship */
+    profile?: ValueTypes['profiles'];
+    profile_id?: boolean;
     __typename?: boolean;
   }>;
   /** columns and relationships of "users" */
@@ -8447,6 +8448,7 @@ export type ModelTypes = {
     update_personal_access_tokens?: ModelTypes['personal_access_tokens_mutation_response'];
     /** update single row of the table: "personal_access_tokens" */
     update_personal_access_tokens_by_pk?: ModelTypes['personal_access_tokens'];
+    update_profile_avatar?: ModelTypes['update_profile_avatar_output'];
     /** update data of the table: "profiles" */
     update_profiles?: ModelTypes['profiles_mutation_response'];
     /** update single row of the table: "profiles" */
@@ -8467,7 +8469,6 @@ export type ModelTypes = {
     update_vouches?: ModelTypes['vouches_mutation_response'];
     /** update single row of the table: "vouches" */
     update_vouches_by_pk?: ModelTypes['vouches'];
-    upload_image?: ModelTypes['upload_image_response'];
   };
   /** columns and relationships of "nominees" */
   ['nominees']: {
@@ -9844,9 +9845,11 @@ export type ModelTypes = {
   };
   /** order by variance() on columns of table "token_gifts" */
   ['token_gifts_variance_order_by']: GraphQLTypes['token_gifts_variance_order_by'];
-  ['upload_image_input']: GraphQLTypes['upload_image_input'];
-  ['upload_image_response']: {
-    url?: string;
+  ['update_profile_avatar_input']: GraphQLTypes['update_profile_avatar_input'];
+  ['update_profile_avatar_output']: {
+    /** An object relationship */
+    profile: ModelTypes['profiles'];
+    profile_id: number;
   };
   /** columns and relationships of "users" */
   ['users']: {
@@ -12521,6 +12524,7 @@ export type GraphQLTypes = {
     update_personal_access_tokens?: GraphQLTypes['personal_access_tokens_mutation_response'];
     /** update single row of the table: "personal_access_tokens" */
     update_personal_access_tokens_by_pk?: GraphQLTypes['personal_access_tokens'];
+    update_profile_avatar?: GraphQLTypes['update_profile_avatar_output'];
     /** update data of the table: "profiles" */
     update_profiles?: GraphQLTypes['profiles_mutation_response'];
     /** update single row of the table: "profiles" */
@@ -12541,7 +12545,6 @@ export type GraphQLTypes = {
     update_vouches?: GraphQLTypes['vouches_mutation_response'];
     /** update single row of the table: "vouches" */
     update_vouches_by_pk?: GraphQLTypes['vouches'];
-    upload_image?: GraphQLTypes['upload_image_response'];
   };
   /** columns and relationships of "nominees" */
   ['nominees']: {
@@ -14777,13 +14780,14 @@ export type GraphQLTypes = {
     sender_id?: GraphQLTypes['order_by'];
     tokens?: GraphQLTypes['order_by'];
   };
-  ['upload_image_input']: {
+  ['update_profile_avatar_input']: {
     image_data: string;
-    user_name?: string;
   };
-  ['upload_image_response']: {
-    __typename: 'upload_image_response';
-    url?: string;
+  ['update_profile_avatar_output']: {
+    __typename: 'update_profile_avatar_output';
+    /** An object relationship */
+    profile: GraphQLTypes['profiles'];
+    profile_id: number;
   };
   /** columns and relationships of "users" */
   ['users']: {

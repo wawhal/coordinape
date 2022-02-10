@@ -913,6 +913,10 @@ export type ValueTypes = {
       },
       ValueTypes['circles']
     ];
+    update_profile_avatar?: [
+      { object: ValueTypes['update_profile_avatar_input'] },
+      ValueTypes['update_profile_avatar_output']
+    ];
     update_profiles?: [
       {
         /** sets the columns of the filtered rows to the given values */
@@ -2203,6 +2207,15 @@ export type ValueTypes = {
     sender_id?: ValueTypes['order_by'] | null;
     tokens?: ValueTypes['order_by'] | null;
   };
+  ['update_profile_avatar_input']: {
+    image_data: string;
+  };
+  ['update_profile_avatar_output']: AliasType<{
+    /** An object relationship */
+    profile?: ValueTypes['profiles'];
+    profile_id?: boolean;
+    __typename?: boolean;
+  }>;
   /** columns and relationships of "users" */
   ['users']: AliasType<{
     address?: boolean;
@@ -2863,6 +2876,7 @@ export type ModelTypes = {
     update_circles?: ModelTypes['circles_mutation_response'];
     /** update single row of the table: "circles" */
     update_circles_by_pk?: ModelTypes['circles'];
+    update_profile_avatar?: ModelTypes['update_profile_avatar_output'];
     /** update data of the table: "profiles" */
     update_profiles?: ModelTypes['profiles_mutation_response'];
     /** update single row of the table: "profiles" */
@@ -3325,6 +3339,12 @@ export type ModelTypes = {
   };
   /** order by variance() on columns of table "token_gifts" */
   ['token_gifts_variance_order_by']: GraphQLTypes['token_gifts_variance_order_by'];
+  ['update_profile_avatar_input']: GraphQLTypes['update_profile_avatar_input'];
+  ['update_profile_avatar_output']: {
+    /** An object relationship */
+    profile: ModelTypes['profiles'];
+    profile_id: number;
+  };
   /** columns and relationships of "users" */
   ['users']: {
     address: string;
@@ -4226,6 +4246,7 @@ export type GraphQLTypes = {
     update_circles?: GraphQLTypes['circles_mutation_response'];
     /** update single row of the table: "circles" */
     update_circles_by_pk?: GraphQLTypes['circles'];
+    update_profile_avatar?: GraphQLTypes['update_profile_avatar_output'];
     /** update data of the table: "profiles" */
     update_profiles?: GraphQLTypes['profiles_mutation_response'];
     /** update single row of the table: "profiles" */
@@ -5135,6 +5156,15 @@ export type GraphQLTypes = {
     recipient_id?: GraphQLTypes['order_by'];
     sender_id?: GraphQLTypes['order_by'];
     tokens?: GraphQLTypes['order_by'];
+  };
+  ['update_profile_avatar_input']: {
+    image_data: string;
+  };
+  ['update_profile_avatar_output']: {
+    __typename: 'update_profile_avatar_output';
+    /** An object relationship */
+    profile: GraphQLTypes['profiles'];
+    profile_id: number;
   };
   /** columns and relationships of "users" */
   ['users']: {

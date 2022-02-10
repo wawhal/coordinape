@@ -6610,6 +6610,14 @@ export const AllTypesProps: Record<string, any> = {
         required: true,
       },
     },
+    update_profile_avatar: {
+      object: {
+        type: 'update_profile_avatar_input',
+        array: false,
+        arrayRequired: false,
+        required: true,
+      },
+    },
     update_profiles: {
       _inc: {
         type: 'profiles_inc_input',
@@ -6805,14 +6813,6 @@ export const AllTypesProps: Record<string, any> = {
       },
       pk_columns: {
         type: 'vouches_pk_columns_input',
-        array: false,
-        arrayRequired: false,
-        required: true,
-      },
-    },
-    upload_image: {
-      object: {
-        type: 'upload_image_input',
         array: false,
         arrayRequired: false,
         required: true,
@@ -13675,18 +13675,12 @@ export const AllTypesProps: Record<string, any> = {
       required: false,
     },
   },
-  upload_image_input: {
+  update_profile_avatar_input: {
     image_data: {
       type: 'String',
       array: false,
       arrayRequired: false,
       required: true,
-    },
-    user_name: {
-      type: 'String',
-      array: false,
-      arrayRequired: false,
-      required: false,
     },
   },
   users: {
@@ -16581,6 +16575,7 @@ export const ReturnTypes: Record<string, any> = {
     update_pending_token_gifts_by_pk: 'pending_token_gifts',
     update_personal_access_tokens: 'personal_access_tokens_mutation_response',
     update_personal_access_tokens_by_pk: 'personal_access_tokens',
+    update_profile_avatar: 'update_profile_avatar_output',
     update_profiles: 'profiles_mutation_response',
     update_profiles_by_pk: 'profiles',
     update_teammates: 'teammates_mutation_response',
@@ -16591,7 +16586,6 @@ export const ReturnTypes: Record<string, any> = {
     update_users_by_pk: 'users',
     update_vouches: 'vouches_mutation_response',
     update_vouches_by_pk: 'vouches',
-    upload_image: 'upload_image_response',
   },
   nominees: {
     address: 'String',
@@ -17502,8 +17496,9 @@ export const ReturnTypes: Record<string, any> = {
     sender_id: 'Float',
     tokens: 'Float',
   },
-  upload_image_response: {
-    url: 'String',
+  update_profile_avatar_output: {
+    profile: 'profiles',
+    profile_id: 'Int',
   },
   users: {
     address: 'String',
