@@ -343,19 +343,6 @@ export type ValueTypes = {
       },
       ValueTypes['token_gifts']
     ];
-    token_gifts_aggregate?: [
-      {
-        /** distinct select on columns */
-        distinct_on?: ValueTypes['token_gifts_select_column'][] /** limit the number of rows returned */;
-        limit?:
-          | number
-          | null /** skip the first n rows. Use only with order_by */;
-        offset?: number | null /** sort the rows by one or more columns */;
-        order_by?: ValueTypes['token_gifts_order_by'][] /** filter the rows returned */;
-        where?: ValueTypes['token_gifts_bool_exp'] | null;
-      },
-      ValueTypes['token_gifts_aggregate']
-    ];
     token_name?: boolean;
     updated_at?: boolean;
     users?: [
@@ -573,42 +560,28 @@ export type ValueTypes = {
     nomination_days_limit?: ValueTypes['order_by'] | null;
     protocol_id?: ValueTypes['order_by'] | null;
   };
-  ['createUserInput']: {
-    address: string;
-    circle_id: number;
-    fixed_non_receiver?: boolean | null;
-    give_token_remaining?: number | null;
-    name: string;
-    non_giver?: boolean | null;
-    non_receiver?: boolean | null;
-    role?: number | null;
-    starting_tokens?: number | null;
-  };
-  ['createUserResponse']: AliasType<{
-    /** The ethereum address of the user */
-    address?: boolean;
-    fixed_non_receiver?: boolean;
-    give_token_remaining?: boolean;
-    /** Primary key */
-    id?: boolean;
-    /** human readable user name */
-    name?: boolean;
-    non_giver?: boolean;
-    non_receiver?: boolean;
-    role?: boolean;
-    starting_tokens?: boolean;
-    __typename?: boolean;
-  }>;
   ['create_circle_input']: {
+    address: string;
     circle_name: string;
     protocol_id?: number | null;
     protocol_name?: string | null;
     user_name: string;
   };
   ['create_circle_response']: AliasType<{
-    /** An object relationship */
-    circle?: ValueTypes['circles'];
+    alloc_text?: boolean;
+    auto_opt_out?: boolean;
+    default_opt_in?: boolean;
     id?: boolean;
+    logo?: boolean;
+    min_vouches?: boolean;
+    name?: boolean;
+    nomination_days_limit?: boolean;
+    only_giver_vouch?: boolean;
+    /** An object relationship */
+    protocol?: ValueTypes['organizations'];
+    protocol_id?: boolean;
+    team_sel_text?: boolean;
+    team_selection?: boolean;
     users?: [
       {
         /** distinct select on columns */
@@ -622,6 +595,8 @@ export type ValueTypes = {
       },
       ValueTypes['users']
     ];
+    vouching?: boolean;
+    vouching_text?: boolean;
     __typename?: boolean;
   }>;
   ['date']: unknown;
@@ -881,10 +856,6 @@ export type ValueTypes = {
   ['gift_private_select_column']: gift_private_select_column;
   /** mutation root */
   ['mutation_root']: AliasType<{
-    createUser?: [
-      { object: ValueTypes['createUserInput'] },
-      ValueTypes['createUserResponse']
-    ];
     create_circle?: [
       { object: ValueTypes['create_circle_input'] },
       ValueTypes['create_circle_response']
@@ -1563,19 +1534,6 @@ export type ValueTypes = {
       },
       ValueTypes['token_gifts']
     ];
-    token_gifts_aggregate?: [
-      {
-        /** distinct select on columns */
-        distinct_on?: ValueTypes['token_gifts_select_column'][] /** limit the number of rows returned */;
-        limit?:
-          | number
-          | null /** skip the first n rows. Use only with order_by */;
-        offset?: number | null /** sort the rows by one or more columns */;
-        order_by?: ValueTypes['token_gifts_order_by'][] /** filter the rows returned */;
-        where?: ValueTypes['token_gifts_bool_exp'] | null;
-      },
-      ValueTypes['token_gifts_aggregate']
-    ];
     token_gifts_by_pk?: [
       { id: ValueTypes['bigint'] },
       ValueTypes['token_gifts']
@@ -1781,19 +1739,6 @@ export type ValueTypes = {
       },
       ValueTypes['token_gifts']
     ];
-    token_gifts_aggregate?: [
-      {
-        /** distinct select on columns */
-        distinct_on?: ValueTypes['token_gifts_select_column'][] /** limit the number of rows returned */;
-        limit?:
-          | number
-          | null /** skip the first n rows. Use only with order_by */;
-        offset?: number | null /** sort the rows by one or more columns */;
-        order_by?: ValueTypes['token_gifts_order_by'][] /** filter the rows returned */;
-        where?: ValueTypes['token_gifts_bool_exp'] | null;
-      },
-      ValueTypes['token_gifts_aggregate']
-    ];
     token_gifts_by_pk?: [
       { id: ValueTypes['bigint'] },
       ValueTypes['token_gifts']
@@ -1915,33 +1860,6 @@ export type ValueTypes = {
     updated_at?: boolean;
     __typename?: boolean;
   }>;
-  /** aggregated selection of "token_gifts" */
-  ['token_gifts_aggregate']: AliasType<{
-    aggregate?: ValueTypes['token_gifts_aggregate_fields'];
-    nodes?: ValueTypes['token_gifts'];
-    __typename?: boolean;
-  }>;
-  /** aggregate fields of "token_gifts" */
-  ['token_gifts_aggregate_fields']: AliasType<{
-    avg?: ValueTypes['token_gifts_avg_fields'];
-    count?: [
-      {
-        columns?: ValueTypes['token_gifts_select_column'][];
-        distinct?: boolean | null;
-      },
-      boolean
-    ];
-    max?: ValueTypes['token_gifts_max_fields'];
-    min?: ValueTypes['token_gifts_min_fields'];
-    stddev?: ValueTypes['token_gifts_stddev_fields'];
-    stddev_pop?: ValueTypes['token_gifts_stddev_pop_fields'];
-    stddev_samp?: ValueTypes['token_gifts_stddev_samp_fields'];
-    sum?: ValueTypes['token_gifts_sum_fields'];
-    var_pop?: ValueTypes['token_gifts_var_pop_fields'];
-    var_samp?: ValueTypes['token_gifts_var_samp_fields'];
-    variance?: ValueTypes['token_gifts_variance_fields'];
-    __typename?: boolean;
-  }>;
   /** order by aggregate values of table "token_gifts" */
   ['token_gifts_aggregate_order_by']: {
     avg?: ValueTypes['token_gifts_avg_order_by'] | null;
@@ -1956,16 +1874,6 @@ export type ValueTypes = {
     var_samp?: ValueTypes['token_gifts_var_samp_order_by'] | null;
     variance?: ValueTypes['token_gifts_variance_order_by'] | null;
   };
-  /** aggregate avg on columns */
-  ['token_gifts_avg_fields']: AliasType<{
-    circle_id?: boolean;
-    epoch_id?: boolean;
-    id?: boolean;
-    recipient_id?: boolean;
-    sender_id?: boolean;
-    tokens?: boolean;
-    __typename?: boolean;
-  }>;
   /** order by avg() on columns of table "token_gifts" */
   ['token_gifts_avg_order_by']: {
     circle_id?: ValueTypes['order_by'] | null;
@@ -1996,21 +1904,6 @@ export type ValueTypes = {
     tokens?: ValueTypes['Int_comparison_exp'] | null;
     updated_at?: ValueTypes['timestamp_comparison_exp'] | null;
   };
-  /** aggregate max on columns */
-  ['token_gifts_max_fields']: AliasType<{
-    circle_id?: boolean;
-    created_at?: boolean;
-    dts_created?: boolean;
-    epoch_id?: boolean;
-    id?: boolean;
-    recipient_address?: boolean;
-    recipient_id?: boolean;
-    sender_address?: boolean;
-    sender_id?: boolean;
-    tokens?: boolean;
-    updated_at?: boolean;
-    __typename?: boolean;
-  }>;
   /** order by max() on columns of table "token_gifts" */
   ['token_gifts_max_order_by']: {
     circle_id?: ValueTypes['order_by'] | null;
@@ -2025,21 +1918,6 @@ export type ValueTypes = {
     tokens?: ValueTypes['order_by'] | null;
     updated_at?: ValueTypes['order_by'] | null;
   };
-  /** aggregate min on columns */
-  ['token_gifts_min_fields']: AliasType<{
-    circle_id?: boolean;
-    created_at?: boolean;
-    dts_created?: boolean;
-    epoch_id?: boolean;
-    id?: boolean;
-    recipient_address?: boolean;
-    recipient_id?: boolean;
-    sender_address?: boolean;
-    sender_id?: boolean;
-    tokens?: boolean;
-    updated_at?: boolean;
-    __typename?: boolean;
-  }>;
   /** order by min() on columns of table "token_gifts" */
   ['token_gifts_min_order_by']: {
     circle_id?: ValueTypes['order_by'] | null;
@@ -2074,16 +1952,6 @@ export type ValueTypes = {
   };
   /** select columns of table "token_gifts" */
   ['token_gifts_select_column']: token_gifts_select_column;
-  /** aggregate stddev on columns */
-  ['token_gifts_stddev_fields']: AliasType<{
-    circle_id?: boolean;
-    epoch_id?: boolean;
-    id?: boolean;
-    recipient_id?: boolean;
-    sender_id?: boolean;
-    tokens?: boolean;
-    __typename?: boolean;
-  }>;
   /** order by stddev() on columns of table "token_gifts" */
   ['token_gifts_stddev_order_by']: {
     circle_id?: ValueTypes['order_by'] | null;
@@ -2093,16 +1961,6 @@ export type ValueTypes = {
     sender_id?: ValueTypes['order_by'] | null;
     tokens?: ValueTypes['order_by'] | null;
   };
-  /** aggregate stddev_pop on columns */
-  ['token_gifts_stddev_pop_fields']: AliasType<{
-    circle_id?: boolean;
-    epoch_id?: boolean;
-    id?: boolean;
-    recipient_id?: boolean;
-    sender_id?: boolean;
-    tokens?: boolean;
-    __typename?: boolean;
-  }>;
   /** order by stddev_pop() on columns of table "token_gifts" */
   ['token_gifts_stddev_pop_order_by']: {
     circle_id?: ValueTypes['order_by'] | null;
@@ -2112,16 +1970,6 @@ export type ValueTypes = {
     sender_id?: ValueTypes['order_by'] | null;
     tokens?: ValueTypes['order_by'] | null;
   };
-  /** aggregate stddev_samp on columns */
-  ['token_gifts_stddev_samp_fields']: AliasType<{
-    circle_id?: boolean;
-    epoch_id?: boolean;
-    id?: boolean;
-    recipient_id?: boolean;
-    sender_id?: boolean;
-    tokens?: boolean;
-    __typename?: boolean;
-  }>;
   /** order by stddev_samp() on columns of table "token_gifts" */
   ['token_gifts_stddev_samp_order_by']: {
     circle_id?: ValueTypes['order_by'] | null;
@@ -2131,16 +1979,6 @@ export type ValueTypes = {
     sender_id?: ValueTypes['order_by'] | null;
     tokens?: ValueTypes['order_by'] | null;
   };
-  /** aggregate sum on columns */
-  ['token_gifts_sum_fields']: AliasType<{
-    circle_id?: boolean;
-    epoch_id?: boolean;
-    id?: boolean;
-    recipient_id?: boolean;
-    sender_id?: boolean;
-    tokens?: boolean;
-    __typename?: boolean;
-  }>;
   /** order by sum() on columns of table "token_gifts" */
   ['token_gifts_sum_order_by']: {
     circle_id?: ValueTypes['order_by'] | null;
@@ -2150,16 +1988,6 @@ export type ValueTypes = {
     sender_id?: ValueTypes['order_by'] | null;
     tokens?: ValueTypes['order_by'] | null;
   };
-  /** aggregate var_pop on columns */
-  ['token_gifts_var_pop_fields']: AliasType<{
-    circle_id?: boolean;
-    epoch_id?: boolean;
-    id?: boolean;
-    recipient_id?: boolean;
-    sender_id?: boolean;
-    tokens?: boolean;
-    __typename?: boolean;
-  }>;
   /** order by var_pop() on columns of table "token_gifts" */
   ['token_gifts_var_pop_order_by']: {
     circle_id?: ValueTypes['order_by'] | null;
@@ -2169,16 +1997,6 @@ export type ValueTypes = {
     sender_id?: ValueTypes['order_by'] | null;
     tokens?: ValueTypes['order_by'] | null;
   };
-  /** aggregate var_samp on columns */
-  ['token_gifts_var_samp_fields']: AliasType<{
-    circle_id?: boolean;
-    epoch_id?: boolean;
-    id?: boolean;
-    recipient_id?: boolean;
-    sender_id?: boolean;
-    tokens?: boolean;
-    __typename?: boolean;
-  }>;
   /** order by var_samp() on columns of table "token_gifts" */
   ['token_gifts_var_samp_order_by']: {
     circle_id?: ValueTypes['order_by'] | null;
@@ -2188,16 +2006,6 @@ export type ValueTypes = {
     sender_id?: ValueTypes['order_by'] | null;
     tokens?: ValueTypes['order_by'] | null;
   };
-  /** aggregate variance on columns */
-  ['token_gifts_variance_fields']: AliasType<{
-    circle_id?: boolean;
-    epoch_id?: boolean;
-    id?: boolean;
-    recipient_id?: boolean;
-    sender_id?: boolean;
-    tokens?: boolean;
-    __typename?: boolean;
-  }>;
   /** order by variance() on columns of table "token_gifts" */
   ['token_gifts_variance_order_by']: {
     circle_id?: ValueTypes['order_by'] | null;
@@ -2287,19 +2095,6 @@ export type ValueTypes = {
       },
       ValueTypes['token_gifts']
     ];
-    received_gifts_aggregate?: [
-      {
-        /** distinct select on columns */
-        distinct_on?: ValueTypes['token_gifts_select_column'][] /** limit the number of rows returned */;
-        limit?:
-          | number
-          | null /** skip the first n rows. Use only with order_by */;
-        offset?: number | null /** sort the rows by one or more columns */;
-        order_by?: ValueTypes['token_gifts_order_by'][] /** filter the rows returned */;
-        where?: ValueTypes['token_gifts_bool_exp'] | null;
-      },
-      ValueTypes['token_gifts_aggregate']
-    ];
     role?: boolean;
     sent_gifts?: [
       {
@@ -2313,19 +2108,6 @@ export type ValueTypes = {
         where?: ValueTypes['token_gifts_bool_exp'] | null;
       },
       ValueTypes['token_gifts']
-    ];
-    sent_gifts_aggregate?: [
-      {
-        /** distinct select on columns */
-        distinct_on?: ValueTypes['token_gifts_select_column'][] /** limit the number of rows returned */;
-        limit?:
-          | number
-          | null /** skip the first n rows. Use only with order_by */;
-        offset?: number | null /** sort the rows by one or more columns */;
-        order_by?: ValueTypes['token_gifts_order_by'][] /** filter the rows returned */;
-        where?: ValueTypes['token_gifts_bool_exp'] | null;
-      },
-      ValueTypes['token_gifts_aggregate']
     ];
     starting_tokens?: boolean;
     updated_at?: boolean;
@@ -2725,8 +2507,6 @@ export type ModelTypes = {
     team_selection: boolean;
     /** An array relationship */
     token_gifts: ModelTypes['token_gifts'][];
-    /** An aggregate relationship */
-    token_gifts_aggregate: ModelTypes['token_gifts_aggregate'];
     token_name: string;
     updated_at?: ModelTypes['timestamp'];
     /** An array relationship */
@@ -2775,28 +2555,26 @@ export type ModelTypes = {
   ['circles_var_samp_order_by']: GraphQLTypes['circles_var_samp_order_by'];
   /** order by variance() on columns of table "circles" */
   ['circles_variance_order_by']: GraphQLTypes['circles_variance_order_by'];
-  ['createUserInput']: GraphQLTypes['createUserInput'];
-  ['createUserResponse']: {
-    /** The ethereum address of the user */
-    address: string;
-    fixed_non_receiver: boolean;
-    give_token_remaining: number;
-    /** Primary key */
-    id: string;
-    /** human readable user name */
-    name: string;
-    non_giver: boolean;
-    non_receiver: boolean;
-    role: number;
-    starting_tokens: number;
-  };
   ['create_circle_input']: GraphQLTypes['create_circle_input'];
   ['create_circle_response']: {
-    /** An object relationship */
-    circle: ModelTypes['circles'];
+    alloc_text?: string;
+    auto_opt_out: boolean;
+    default_opt_in: boolean;
     id: number;
+    logo?: string;
+    min_vouches: number;
+    name: string;
+    nomination_days_limit: number;
+    only_giver_vouch: boolean;
+    /** An object relationship */
+    protocol: ModelTypes['organizations'];
+    protocol_id: number;
+    team_sel_text?: string;
+    team_selection: boolean;
     /** An array relationship */
     users: ModelTypes['users'][];
+    vouching: boolean;
+    vouching_text?: string;
   };
   ['date']: any;
   /** Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'. */
@@ -2870,7 +2648,6 @@ export type ModelTypes = {
   ['gift_private_select_column']: GraphQLTypes['gift_private_select_column'];
   /** mutation root */
   ['mutation_root']: {
-    createUser?: ModelTypes['createUserResponse'];
     create_circle?: ModelTypes['create_circle_response'];
     /** update data of the table: "circles" */
     update_circles?: ModelTypes['circles_mutation_response'];
@@ -3079,8 +2856,6 @@ export type ModelTypes = {
     teammates_by_pk?: ModelTypes['teammates'];
     /** An array relationship */
     token_gifts: ModelTypes['token_gifts'][];
-    /** An aggregate relationship */
-    token_gifts_aggregate: ModelTypes['token_gifts_aggregate'];
     /** fetch data from the table: "token_gifts" using primary key columns */
     token_gifts_by_pk?: ModelTypes['token_gifts'];
     /** An array relationship */
@@ -3133,8 +2908,6 @@ export type ModelTypes = {
     teammates_by_pk?: ModelTypes['teammates'];
     /** An array relationship */
     token_gifts: ModelTypes['token_gifts'][];
-    /** An aggregate relationship */
-    token_gifts_aggregate: ModelTypes['token_gifts_aggregate'];
     /** fetch data from the table: "token_gifts" using primary key columns */
     token_gifts_by_pk?: ModelTypes['token_gifts'];
     /** An array relationship */
@@ -3192,151 +2965,32 @@ export type ModelTypes = {
     tokens: number;
     updated_at?: ModelTypes['timestamp'];
   };
-  /** aggregated selection of "token_gifts" */
-  ['token_gifts_aggregate']: {
-    aggregate?: ModelTypes['token_gifts_aggregate_fields'];
-    nodes: ModelTypes['token_gifts'][];
-  };
-  /** aggregate fields of "token_gifts" */
-  ['token_gifts_aggregate_fields']: {
-    avg?: ModelTypes['token_gifts_avg_fields'];
-    count: number;
-    max?: ModelTypes['token_gifts_max_fields'];
-    min?: ModelTypes['token_gifts_min_fields'];
-    stddev?: ModelTypes['token_gifts_stddev_fields'];
-    stddev_pop?: ModelTypes['token_gifts_stddev_pop_fields'];
-    stddev_samp?: ModelTypes['token_gifts_stddev_samp_fields'];
-    sum?: ModelTypes['token_gifts_sum_fields'];
-    var_pop?: ModelTypes['token_gifts_var_pop_fields'];
-    var_samp?: ModelTypes['token_gifts_var_samp_fields'];
-    variance?: ModelTypes['token_gifts_variance_fields'];
-  };
   /** order by aggregate values of table "token_gifts" */
   ['token_gifts_aggregate_order_by']: GraphQLTypes['token_gifts_aggregate_order_by'];
-  /** aggregate avg on columns */
-  ['token_gifts_avg_fields']: {
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
-  };
   /** order by avg() on columns of table "token_gifts" */
   ['token_gifts_avg_order_by']: GraphQLTypes['token_gifts_avg_order_by'];
   /** Boolean expression to filter rows from the table "token_gifts". All fields are combined with a logical 'AND'. */
   ['token_gifts_bool_exp']: GraphQLTypes['token_gifts_bool_exp'];
-  /** aggregate max on columns */
-  ['token_gifts_max_fields']: {
-    circle_id?: ModelTypes['bigint'];
-    created_at?: ModelTypes['timestamp'];
-    dts_created?: ModelTypes['timestamp'];
-    epoch_id?: number;
-    id?: ModelTypes['bigint'];
-    recipient_address?: string;
-    recipient_id?: ModelTypes['bigint'];
-    sender_address?: string;
-    sender_id?: ModelTypes['bigint'];
-    tokens?: number;
-    updated_at?: ModelTypes['timestamp'];
-  };
   /** order by max() on columns of table "token_gifts" */
   ['token_gifts_max_order_by']: GraphQLTypes['token_gifts_max_order_by'];
-  /** aggregate min on columns */
-  ['token_gifts_min_fields']: {
-    circle_id?: ModelTypes['bigint'];
-    created_at?: ModelTypes['timestamp'];
-    dts_created?: ModelTypes['timestamp'];
-    epoch_id?: number;
-    id?: ModelTypes['bigint'];
-    recipient_address?: string;
-    recipient_id?: ModelTypes['bigint'];
-    sender_address?: string;
-    sender_id?: ModelTypes['bigint'];
-    tokens?: number;
-    updated_at?: ModelTypes['timestamp'];
-  };
   /** order by min() on columns of table "token_gifts" */
   ['token_gifts_min_order_by']: GraphQLTypes['token_gifts_min_order_by'];
   /** Ordering options when selecting data from "token_gifts". */
   ['token_gifts_order_by']: GraphQLTypes['token_gifts_order_by'];
   /** select columns of table "token_gifts" */
   ['token_gifts_select_column']: GraphQLTypes['token_gifts_select_column'];
-  /** aggregate stddev on columns */
-  ['token_gifts_stddev_fields']: {
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
-  };
   /** order by stddev() on columns of table "token_gifts" */
   ['token_gifts_stddev_order_by']: GraphQLTypes['token_gifts_stddev_order_by'];
-  /** aggregate stddev_pop on columns */
-  ['token_gifts_stddev_pop_fields']: {
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
-  };
   /** order by stddev_pop() on columns of table "token_gifts" */
   ['token_gifts_stddev_pop_order_by']: GraphQLTypes['token_gifts_stddev_pop_order_by'];
-  /** aggregate stddev_samp on columns */
-  ['token_gifts_stddev_samp_fields']: {
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
-  };
   /** order by stddev_samp() on columns of table "token_gifts" */
   ['token_gifts_stddev_samp_order_by']: GraphQLTypes['token_gifts_stddev_samp_order_by'];
-  /** aggregate sum on columns */
-  ['token_gifts_sum_fields']: {
-    circle_id?: ModelTypes['bigint'];
-    epoch_id?: number;
-    id?: ModelTypes['bigint'];
-    recipient_id?: ModelTypes['bigint'];
-    sender_id?: ModelTypes['bigint'];
-    tokens?: number;
-  };
   /** order by sum() on columns of table "token_gifts" */
   ['token_gifts_sum_order_by']: GraphQLTypes['token_gifts_sum_order_by'];
-  /** aggregate var_pop on columns */
-  ['token_gifts_var_pop_fields']: {
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
-  };
   /** order by var_pop() on columns of table "token_gifts" */
   ['token_gifts_var_pop_order_by']: GraphQLTypes['token_gifts_var_pop_order_by'];
-  /** aggregate var_samp on columns */
-  ['token_gifts_var_samp_fields']: {
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
-  };
   /** order by var_samp() on columns of table "token_gifts" */
   ['token_gifts_var_samp_order_by']: GraphQLTypes['token_gifts_var_samp_order_by'];
-  /** aggregate variance on columns */
-  ['token_gifts_variance_fields']: {
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
-  };
   /** order by variance() on columns of table "token_gifts" */
   ['token_gifts_variance_order_by']: GraphQLTypes['token_gifts_variance_order_by'];
   ['update_profile_avatar_input']: GraphQLTypes['update_profile_avatar_input'];
@@ -3372,13 +3026,9 @@ export type ModelTypes = {
     profile?: ModelTypes['profiles'];
     /** An array relationship */
     received_gifts: ModelTypes['token_gifts'][];
-    /** An aggregate relationship */
-    received_gifts_aggregate: ModelTypes['token_gifts_aggregate'];
     role: number;
     /** An array relationship */
     sent_gifts: ModelTypes['token_gifts'][];
-    /** An aggregate relationship */
-    sent_gifts_aggregate: ModelTypes['token_gifts_aggregate'];
     starting_tokens: number;
     updated_at?: ModelTypes['timestamp'];
   };
@@ -3748,8 +3398,6 @@ export type GraphQLTypes = {
     team_selection: boolean;
     /** An array relationship */
     token_gifts: Array<GraphQLTypes['token_gifts']>;
-    /** An aggregate relationship */
-    token_gifts_aggregate: GraphQLTypes['token_gifts_aggregate'];
     token_name: string;
     updated_at?: GraphQLTypes['timestamp'];
     /** An array relationship */
@@ -3953,33 +3601,8 @@ export type GraphQLTypes = {
     nomination_days_limit?: GraphQLTypes['order_by'];
     protocol_id?: GraphQLTypes['order_by'];
   };
-  ['createUserInput']: {
-    address: string;
-    circle_id: number;
-    fixed_non_receiver?: boolean;
-    give_token_remaining?: number;
-    name: string;
-    non_giver?: boolean;
-    non_receiver?: boolean;
-    role?: number;
-    starting_tokens?: number;
-  };
-  ['createUserResponse']: {
-    __typename: 'createUserResponse';
-    /** The ethereum address of the user */
-    address: string;
-    fixed_non_receiver: boolean;
-    give_token_remaining: number;
-    /** Primary key */
-    id: string;
-    /** human readable user name */
-    name: string;
-    non_giver: boolean;
-    non_receiver: boolean;
-    role: number;
-    starting_tokens: number;
-  };
   ['create_circle_input']: {
+    address: string;
     circle_name: string;
     protocol_id?: number;
     protocol_name?: string;
@@ -3987,11 +3610,24 @@ export type GraphQLTypes = {
   };
   ['create_circle_response']: {
     __typename: 'create_circle_response';
-    /** An object relationship */
-    circle: GraphQLTypes['circles'];
+    alloc_text?: string;
+    auto_opt_out: boolean;
+    default_opt_in: boolean;
     id: number;
+    logo?: string;
+    min_vouches: number;
+    name: string;
+    nomination_days_limit: number;
+    only_giver_vouch: boolean;
+    /** An object relationship */
+    protocol: GraphQLTypes['organizations'];
+    protocol_id: number;
+    team_sel_text?: string;
+    team_selection: boolean;
     /** An array relationship */
     users: Array<GraphQLTypes['users']>;
+    vouching: boolean;
+    vouching_text?: string;
   };
   ['date']: any;
   /** Boolean expression to compare columns of type "date". All fields are combined with logical 'AND'. */
@@ -4240,7 +3876,6 @@ export type GraphQLTypes = {
   /** mutation root */
   ['mutation_root']: {
     __typename: 'mutation_root';
-    createUser?: GraphQLTypes['createUserResponse'];
     create_circle?: GraphQLTypes['create_circle_response'];
     /** update data of the table: "circles" */
     update_circles?: GraphQLTypes['circles_mutation_response'];
@@ -4716,8 +4351,6 @@ export type GraphQLTypes = {
     teammates_by_pk?: GraphQLTypes['teammates'];
     /** An array relationship */
     token_gifts: Array<GraphQLTypes['token_gifts']>;
-    /** An aggregate relationship */
-    token_gifts_aggregate: GraphQLTypes['token_gifts_aggregate'];
     /** fetch data from the table: "token_gifts" using primary key columns */
     token_gifts_by_pk?: GraphQLTypes['token_gifts'];
     /** An array relationship */
@@ -4771,8 +4404,6 @@ export type GraphQLTypes = {
     teammates_by_pk?: GraphQLTypes['teammates'];
     /** An array relationship */
     token_gifts: Array<GraphQLTypes['token_gifts']>;
-    /** An aggregate relationship */
-    token_gifts_aggregate: GraphQLTypes['token_gifts_aggregate'];
     /** fetch data from the table: "token_gifts" using primary key columns */
     token_gifts_by_pk?: GraphQLTypes['token_gifts'];
     /** An array relationship */
@@ -4871,27 +4502,6 @@ export type GraphQLTypes = {
     tokens: number;
     updated_at?: GraphQLTypes['timestamp'];
   };
-  /** aggregated selection of "token_gifts" */
-  ['token_gifts_aggregate']: {
-    __typename: 'token_gifts_aggregate';
-    aggregate?: GraphQLTypes['token_gifts_aggregate_fields'];
-    nodes: Array<GraphQLTypes['token_gifts']>;
-  };
-  /** aggregate fields of "token_gifts" */
-  ['token_gifts_aggregate_fields']: {
-    __typename: 'token_gifts_aggregate_fields';
-    avg?: GraphQLTypes['token_gifts_avg_fields'];
-    count: number;
-    max?: GraphQLTypes['token_gifts_max_fields'];
-    min?: GraphQLTypes['token_gifts_min_fields'];
-    stddev?: GraphQLTypes['token_gifts_stddev_fields'];
-    stddev_pop?: GraphQLTypes['token_gifts_stddev_pop_fields'];
-    stddev_samp?: GraphQLTypes['token_gifts_stddev_samp_fields'];
-    sum?: GraphQLTypes['token_gifts_sum_fields'];
-    var_pop?: GraphQLTypes['token_gifts_var_pop_fields'];
-    var_samp?: GraphQLTypes['token_gifts_var_samp_fields'];
-    variance?: GraphQLTypes['token_gifts_variance_fields'];
-  };
   /** order by aggregate values of table "token_gifts" */
   ['token_gifts_aggregate_order_by']: {
     avg?: GraphQLTypes['token_gifts_avg_order_by'];
@@ -4905,16 +4515,6 @@ export type GraphQLTypes = {
     var_pop?: GraphQLTypes['token_gifts_var_pop_order_by'];
     var_samp?: GraphQLTypes['token_gifts_var_samp_order_by'];
     variance?: GraphQLTypes['token_gifts_variance_order_by'];
-  };
-  /** aggregate avg on columns */
-  ['token_gifts_avg_fields']: {
-    __typename: 'token_gifts_avg_fields';
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
   };
   /** order by avg() on columns of table "token_gifts" */
   ['token_gifts_avg_order_by']: {
@@ -4946,21 +4546,6 @@ export type GraphQLTypes = {
     tokens?: GraphQLTypes['Int_comparison_exp'];
     updated_at?: GraphQLTypes['timestamp_comparison_exp'];
   };
-  /** aggregate max on columns */
-  ['token_gifts_max_fields']: {
-    __typename: 'token_gifts_max_fields';
-    circle_id?: GraphQLTypes['bigint'];
-    created_at?: GraphQLTypes['timestamp'];
-    dts_created?: GraphQLTypes['timestamp'];
-    epoch_id?: number;
-    id?: GraphQLTypes['bigint'];
-    recipient_address?: string;
-    recipient_id?: GraphQLTypes['bigint'];
-    sender_address?: string;
-    sender_id?: GraphQLTypes['bigint'];
-    tokens?: number;
-    updated_at?: GraphQLTypes['timestamp'];
-  };
   /** order by max() on columns of table "token_gifts" */
   ['token_gifts_max_order_by']: {
     circle_id?: GraphQLTypes['order_by'];
@@ -4974,21 +4559,6 @@ export type GraphQLTypes = {
     sender_id?: GraphQLTypes['order_by'];
     tokens?: GraphQLTypes['order_by'];
     updated_at?: GraphQLTypes['order_by'];
-  };
-  /** aggregate min on columns */
-  ['token_gifts_min_fields']: {
-    __typename: 'token_gifts_min_fields';
-    circle_id?: GraphQLTypes['bigint'];
-    created_at?: GraphQLTypes['timestamp'];
-    dts_created?: GraphQLTypes['timestamp'];
-    epoch_id?: number;
-    id?: GraphQLTypes['bigint'];
-    recipient_address?: string;
-    recipient_id?: GraphQLTypes['bigint'];
-    sender_address?: string;
-    sender_id?: GraphQLTypes['bigint'];
-    tokens?: number;
-    updated_at?: GraphQLTypes['timestamp'];
   };
   /** order by min() on columns of table "token_gifts" */
   ['token_gifts_min_order_by']: {
@@ -5024,16 +4594,6 @@ export type GraphQLTypes = {
   };
   /** select columns of table "token_gifts" */
   ['token_gifts_select_column']: token_gifts_select_column;
-  /** aggregate stddev on columns */
-  ['token_gifts_stddev_fields']: {
-    __typename: 'token_gifts_stddev_fields';
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
-  };
   /** order by stddev() on columns of table "token_gifts" */
   ['token_gifts_stddev_order_by']: {
     circle_id?: GraphQLTypes['order_by'];
@@ -5042,16 +4602,6 @@ export type GraphQLTypes = {
     recipient_id?: GraphQLTypes['order_by'];
     sender_id?: GraphQLTypes['order_by'];
     tokens?: GraphQLTypes['order_by'];
-  };
-  /** aggregate stddev_pop on columns */
-  ['token_gifts_stddev_pop_fields']: {
-    __typename: 'token_gifts_stddev_pop_fields';
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
   };
   /** order by stddev_pop() on columns of table "token_gifts" */
   ['token_gifts_stddev_pop_order_by']: {
@@ -5062,16 +4612,6 @@ export type GraphQLTypes = {
     sender_id?: GraphQLTypes['order_by'];
     tokens?: GraphQLTypes['order_by'];
   };
-  /** aggregate stddev_samp on columns */
-  ['token_gifts_stddev_samp_fields']: {
-    __typename: 'token_gifts_stddev_samp_fields';
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
-  };
   /** order by stddev_samp() on columns of table "token_gifts" */
   ['token_gifts_stddev_samp_order_by']: {
     circle_id?: GraphQLTypes['order_by'];
@@ -5080,16 +4620,6 @@ export type GraphQLTypes = {
     recipient_id?: GraphQLTypes['order_by'];
     sender_id?: GraphQLTypes['order_by'];
     tokens?: GraphQLTypes['order_by'];
-  };
-  /** aggregate sum on columns */
-  ['token_gifts_sum_fields']: {
-    __typename: 'token_gifts_sum_fields';
-    circle_id?: GraphQLTypes['bigint'];
-    epoch_id?: number;
-    id?: GraphQLTypes['bigint'];
-    recipient_id?: GraphQLTypes['bigint'];
-    sender_id?: GraphQLTypes['bigint'];
-    tokens?: number;
   };
   /** order by sum() on columns of table "token_gifts" */
   ['token_gifts_sum_order_by']: {
@@ -5100,16 +4630,6 @@ export type GraphQLTypes = {
     sender_id?: GraphQLTypes['order_by'];
     tokens?: GraphQLTypes['order_by'];
   };
-  /** aggregate var_pop on columns */
-  ['token_gifts_var_pop_fields']: {
-    __typename: 'token_gifts_var_pop_fields';
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
-  };
   /** order by var_pop() on columns of table "token_gifts" */
   ['token_gifts_var_pop_order_by']: {
     circle_id?: GraphQLTypes['order_by'];
@@ -5119,16 +4639,6 @@ export type GraphQLTypes = {
     sender_id?: GraphQLTypes['order_by'];
     tokens?: GraphQLTypes['order_by'];
   };
-  /** aggregate var_samp on columns */
-  ['token_gifts_var_samp_fields']: {
-    __typename: 'token_gifts_var_samp_fields';
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
-  };
   /** order by var_samp() on columns of table "token_gifts" */
   ['token_gifts_var_samp_order_by']: {
     circle_id?: GraphQLTypes['order_by'];
@@ -5137,16 +4647,6 @@ export type GraphQLTypes = {
     recipient_id?: GraphQLTypes['order_by'];
     sender_id?: GraphQLTypes['order_by'];
     tokens?: GraphQLTypes['order_by'];
-  };
-  /** aggregate variance on columns */
-  ['token_gifts_variance_fields']: {
-    __typename: 'token_gifts_variance_fields';
-    circle_id?: number;
-    epoch_id?: number;
-    id?: number;
-    recipient_id?: number;
-    sender_id?: number;
-    tokens?: number;
   };
   /** order by variance() on columns of table "token_gifts" */
   ['token_gifts_variance_order_by']: {
@@ -5194,13 +4694,9 @@ export type GraphQLTypes = {
     profile?: GraphQLTypes['profiles'];
     /** An array relationship */
     received_gifts: Array<GraphQLTypes['token_gifts']>;
-    /** An aggregate relationship */
-    received_gifts_aggregate: GraphQLTypes['token_gifts_aggregate'];
     role: number;
     /** An array relationship */
     sent_gifts: Array<GraphQLTypes['token_gifts']>;
-    /** An aggregate relationship */
-    sent_gifts_aggregate: GraphQLTypes['token_gifts_aggregate'];
     starting_tokens: number;
     updated_at?: GraphQLTypes['timestamp'];
   };

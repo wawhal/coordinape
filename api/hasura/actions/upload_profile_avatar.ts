@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import aws from 'aws-sdk';
+import sharp from 'sharp';
 
 import { gql } from '../../../api-lib/Gql';
 import {
@@ -25,21 +26,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.log('----image upload----');
     console.log(input.image_data);
 
-    const imageBytes = _base64ToArrayBuffer(input.image_data);
+    const imageBytes = new Buffer(input.image_data, 'base64');
     console.log(imageBytes.byteLength);
 
+    const nicePic = sortOutTheImage(imageBytes);
     const s3 = new aws.S3({
       accessKeyId: 'nothing',
       secretAccessKey: 'bro',
       endpoint: 'http://s3.localhost.localstack.cloud:4566',
     });
 
-    const file_id = 'cat.jpg';
+    const file_id = 'cat22.jpg';
     // Setting up S3 upload parameters
     const params = {
       Bucket: 'coordinape',
       Key: file_id, // File name you want to save as in S3
-      Body: imageBytes,
+      Body: nicePic,
     };
 
     // Uploading files to the bucket
@@ -53,16 +55,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
+    // 80% image quality compression,
+    // append current timestamp to filename,
+    // delete previous image if exists and upload modified image to s3
+
     const mutationResult = await gql.q('mutation')({
       update_profiles_by_pk: [
         {
-          set: { avatar: file_id },
+          _set: { avatar: file_id },
           pk_columns: { id: sessionVariables.hasuraProfileId },
         },
-        { id: true },
+        {
+          id: true,
+          avatar: true,
+          address: true,
+        },
       ],
     });
-    return res.status(200).json(mutationResult.update_profiles_by_pk);
+    if (mutationResult.update_profiles_by_pk) {
+      return res.status(200).json({
+        profile_id: mutationResult.update_profiles_by_pk.id,
+        profile: mutationResult.update_profiles_by_pk,
+      });
+    }
   } catch (e) {
     return res.status(401).json({
       error: '401',
@@ -71,12 +86,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 }
 
-function _base64ToArrayBuffer(base64: string) {
-  const binary_string = window.atob(base64);
-  const len = binary_string.length;
-  const bytes = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    bytes[i] = binary_string.charCodeAt(i);
-  }
-  return bytes.buffer;
+async function sortOutTheImage(imageBytes: Buffer) {
+  const img = sharp(imageBytes);
+  return await img
+    .resize({
+      fit: 'cover',
+      width: 240, // this is so small!
+      height: 240,
+    })
+    .jpeg({
+      quality: 80,
+    })
+    .toBuffer();
 }
