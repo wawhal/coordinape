@@ -61,7 +61,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const ret = await gql.q('mutation')({
       update_profiles: [
         {
-          // TODO: this 504 is harcoded, we need the real userID
+          // TODO: this 504 is hardcoded, we need the real userID
           where: { id: { _eq: 504 } },
           _set: { avatar: 'sup2' },
         },
