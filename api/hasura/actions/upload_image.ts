@@ -1,79 +1,68 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import aws from 'aws-sdk';
-import { z } from 'zod';
 
 import { gql } from '../../../api-lib/Gql';
-import { uploadImageSchemaInput } from '../../../src/lib/zod';
+import {
+  composeHasuraActionRequestBody,
+  uploadImageSchemaInput,
+} from '../../../src/lib/zod';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  let input;
-  try {
-    input = await uploadImageSchemaInput.parseAsync(input);
-  } catch (err) {
-    if (err instanceof z.ZodError) {
-      return res.status(422).json({
-        extensions: err.issues,
-        message: 'Invalid input',
-        code: '422',
-      });
-    }
+  const {
+    input: { object: input },
+    session_variables: sessionVariables,
+  } = composeHasuraActionRequestBody(uploadImageSchemaInput).parse(req.body);
+
+  // admin can't update profile because they don't have a userId
+  if (sessionVariables.hasuraRole == 'admin') {
+    return res.status(401).json({
+      error: '401',
+      message: 'upload_image not authorized for admin role, only user role',
+    });
   }
 
   try {
-    if (input) {
-      console.log('----image upload----');
-      console.log(input.image_data);
+    console.log('----image upload----');
+    console.log(input.image_data);
 
-      const imageBytes = _base64ToArrayBuffer(input.image_data);
-      console.log(imageBytes.byteLength);
+    const imageBytes = _base64ToArrayBuffer(input.image_data);
+    console.log(imageBytes.byteLength);
 
-      const s3 = new aws.S3({
-        accessKeyId: 'nothing',
-        secretAccessKey: 'bro',
-      });
+    const s3 = new aws.S3({
+      accessKeyId: 'nothing',
+      secretAccessKey: 'bro',
+      endpoint: 'http://s3.localhost.localstack.cloud:4566',
+    });
 
-      // Setting up S3 upload parameters
-      const params = {
-        Bucket: 'coordinape',
-        Key: 'cat.jpg', // File name you want to save as in S3
-        Body: imageBytes,
-      };
+    const file_id = 'cat.jpg';
+    // Setting up S3 upload parameters
+    const params = {
+      Bucket: 'coordinape',
+      Key: file_id, // File name you want to save as in S3
+      Body: imageBytes,
+    };
 
-      // Uploading files to the bucket
-      try {
-        await s3.upload(params).promise();
-      } catch (e) {
-        // TODO: how does error typing work
-        return res.status(500).json({
-          error: '500',
-          message: e.message || 'Unexpected error uploading file',
-        });
-      }
-    } else {
-      // TODO: not sure why this or create_circle are written w/ this if
-      return res.status(400).json({
-        error: '400',
-        message: 'invalid input',
+    // Uploading files to the bucket
+    try {
+      await s3.upload(params).promise();
+    } catch (err: any) {
+      // TODO: how does error typing work
+      return res.status(500).json({
+        error: '500',
+        message: err.message || 'Unexpected error uploading file',
       });
     }
 
-    //TODO: is it better to write pure GQL vs this object notation stuff?
-    const ret = await gql.q('mutation')({
-      update_profiles: [
+    const mutationResult = await gql.q('mutation')({
+      update_profiles_by_pk: [
         {
-          // TODO: this 504 is hardcoded, we need the real userID
-          where: { id: { _eq: 504 } },
-          _set: { avatar: 'sup2' },
+          set: { avatar: file_id },
+          pk_columns: { id: sessionVariables.hasuraProfileId },
         },
-        {
-          returning: {
-            // TODO: what do i put for returning here
-            avatar: true,
-          },
-        },
+        { id: true },
       ],
     });
-    return res.status(200).json(ret);
+    return res.status(200).json(mutationResult.update_profiles_by_pk);
   } catch (e) {
     return res.status(401).json({
       error: '401',
