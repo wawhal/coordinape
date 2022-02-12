@@ -4,7 +4,6 @@ import {
   InputType,
   OperationOptions,
   chainOptions,
-  $,
 } from 'lib/gql/zeusUser';
 import {
   useTypedQuery as _useTypedQuery,
@@ -79,14 +78,4 @@ export function useCircleIdForEpoch(epochId: number) {
   return useTypedQuery(`circle-for-epoch-${epochId}`, {
     epochs_by_pk: [{ id: epochId }, { circle_id: true }],
   }).data?.epochs_by_pk?.circle_id;
-}
-
-export function useUploadProfileAvatar() {
-  // TODO: i don't know what to do with this key, is it supposed to be unique?
-  return useTypedMutation('update-profile-X', {
-    update_profile_avatar: [
-      { object: { image_data: $`image_data_base64` } },
-      { profile_id: true },
-    ],
-  });
 }

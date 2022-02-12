@@ -45,22 +45,12 @@ export const useApiWithProfile = () => {
     []
   );
 
-  // const updateAvatarMutation = useUploadProfileAvatar();
-
   const updateAvatar = useRecoilLoadCatch(
     () => async (newAvatar: File) => {
       // TODO: I wanted to use hooks here but couldn't get the variables to work w/ mutation
-      try {
-        const image_data_base64 = await fileToBase64(newAvatar);
-        console.log('base64');
-        console.log(image_data_base64);
-        await api.updateProfileAvatar(image_data_base64);
-        // const variables = {image_data_base64};
-        // await updateAvatarMutation.mutateAsync(image_data_base64);
-        await fetchManifest();
-      } catch (e: any) {
-        console.log(e);
-      }
+      const image_data_base64 = await fileToBase64(newAvatar);
+      await api.updateProfileAvatar(image_data_base64);
+      await fetchManifest();
     },
     []
   );

@@ -25,11 +25,11 @@ export function getGql(url: string, getToken: () => string) {
       ],
     });
 
-  const updateProfileAvatar = async (image_data_base64: string) =>
+  const uploadProfileAvatar = async (image_data_base64: string) =>
     makeQuery(url, getToken)('mutation')(
       {
-        update_profile_avatar: [
-          { object: { image_data: $`image_data_base64` } },
+        upload_profile_avatar: [
+          { object: { image_data_base64: $`image_data_base64` } },
           { profile_id: true },
         ],
       },
@@ -42,7 +42,7 @@ export function getGql(url: string, getToken: () => string) {
 
   return {
     updateProfile,
-    updateProfileAvatar,
+    updateProfileAvatar: uploadProfileAvatar,
   };
 }
 

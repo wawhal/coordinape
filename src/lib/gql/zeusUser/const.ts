@@ -1173,6 +1173,38 @@ export const AllTypesProps: Record<string, any> = {
         required: false,
       },
     },
+    token_gifts_aggregate: {
+      distinct_on: {
+        type: 'token_gifts_select_column',
+        array: true,
+        arrayRequired: false,
+        required: true,
+      },
+      limit: {
+        type: 'Int',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+      offset: {
+        type: 'Int',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+      order_by: {
+        type: 'token_gifts_order_by',
+        array: true,
+        arrayRequired: false,
+        required: true,
+      },
+      where: {
+        type: 'token_gifts_bool_exp',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+    },
     users: {
       distinct_on: {
         type: 'users_select_column',
@@ -2067,13 +2099,63 @@ export const AllTypesProps: Record<string, any> = {
       required: false,
     },
   },
-  create_circle_input: {
+  createUserInput: {
     address: {
       type: 'String',
       array: false,
       arrayRequired: false,
       required: true,
     },
+    circle_id: {
+      type: 'Int',
+      array: false,
+      arrayRequired: false,
+      required: true,
+    },
+    fixed_non_receiver: {
+      type: 'Boolean',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+    give_token_remaining: {
+      type: 'Int',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+    name: {
+      type: 'String',
+      array: false,
+      arrayRequired: false,
+      required: true,
+    },
+    non_giver: {
+      type: 'Boolean',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+    non_receiver: {
+      type: 'Boolean',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+    role: {
+      type: 'Int',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+    starting_tokens: {
+      type: 'Int',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+  },
+  create_circle_input: {
     circle_name: {
       type: 'String',
       array: false,
@@ -3139,6 +3221,14 @@ export const AllTypesProps: Record<string, any> = {
   },
   gift_private_select_column: 'enum',
   mutation_root: {
+    createUser: {
+      object: {
+        type: 'createUserInput',
+        array: false,
+        arrayRequired: false,
+        required: true,
+      },
+    },
     create_circle: {
       object: {
         type: 'create_circle_input',
@@ -3187,14 +3277,6 @@ export const AllTypesProps: Record<string, any> = {
         required: true,
       },
     },
-    update_profile_avatar: {
-      object: {
-        type: 'update_profile_avatar_input',
-        array: false,
-        arrayRequired: false,
-        required: true,
-      },
-    },
     update_profiles: {
       _set: {
         type: 'profiles_set_input',
@@ -3218,6 +3300,14 @@ export const AllTypesProps: Record<string, any> = {
       },
       pk_columns: {
         type: 'profiles_pk_columns_input',
+        array: false,
+        arrayRequired: false,
+        required: true,
+      },
+    },
+    upload_profile_avatar: {
+      object: {
+        type: 'upload_profile_avatar_input',
         array: false,
         arrayRequired: false,
         required: true,
@@ -5246,6 +5336,38 @@ export const AllTypesProps: Record<string, any> = {
         required: false,
       },
     },
+    token_gifts_aggregate: {
+      distinct_on: {
+        type: 'token_gifts_select_column',
+        array: true,
+        arrayRequired: false,
+        required: true,
+      },
+      limit: {
+        type: 'Int',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+      offset: {
+        type: 'Int',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+      order_by: {
+        type: 'token_gifts_order_by',
+        array: true,
+        arrayRequired: false,
+        required: true,
+      },
+      where: {
+        type: 'token_gifts_bool_exp',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+    },
     token_gifts_by_pk: {
       id: {
         type: 'bigint',
@@ -5784,6 +5906,38 @@ export const AllTypesProps: Record<string, any> = {
         required: false,
       },
     },
+    token_gifts_aggregate: {
+      distinct_on: {
+        type: 'token_gifts_select_column',
+        array: true,
+        arrayRequired: false,
+        required: true,
+      },
+      limit: {
+        type: 'Int',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+      offset: {
+        type: 'Int',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+      order_by: {
+        type: 'token_gifts_order_by',
+        array: true,
+        arrayRequired: false,
+        required: true,
+      },
+      where: {
+        type: 'token_gifts_bool_exp',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+    },
     token_gifts_by_pk: {
       id: {
         type: 'bigint',
@@ -6092,6 +6246,22 @@ export const AllTypesProps: Record<string, any> = {
       array: true,
       arrayRequired: false,
       required: true,
+    },
+  },
+  token_gifts_aggregate_fields: {
+    count: {
+      columns: {
+        type: 'token_gifts_select_column',
+        array: true,
+        arrayRequired: false,
+        required: true,
+      },
+      distinct: {
+        type: 'Boolean',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
     },
   },
   token_gifts_aggregate_order_by: {
@@ -6805,8 +6975,8 @@ export const AllTypesProps: Record<string, any> = {
       required: false,
     },
   },
-  update_profile_avatar_input: {
-    image_data: {
+  upload_profile_avatar_input: {
+    image_data_base64: {
       type: 'String',
       array: false,
       arrayRequired: false,
@@ -6942,7 +7112,71 @@ export const AllTypesProps: Record<string, any> = {
         required: false,
       },
     },
+    received_gifts_aggregate: {
+      distinct_on: {
+        type: 'token_gifts_select_column',
+        array: true,
+        arrayRequired: false,
+        required: true,
+      },
+      limit: {
+        type: 'Int',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+      offset: {
+        type: 'Int',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+      order_by: {
+        type: 'token_gifts_order_by',
+        array: true,
+        arrayRequired: false,
+        required: true,
+      },
+      where: {
+        type: 'token_gifts_bool_exp',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+    },
     sent_gifts: {
+      distinct_on: {
+        type: 'token_gifts_select_column',
+        array: true,
+        arrayRequired: false,
+        required: true,
+      },
+      limit: {
+        type: 'Int',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+      offset: {
+        type: 'Int',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+      order_by: {
+        type: 'token_gifts_order_by',
+        array: true,
+        arrayRequired: false,
+        required: true,
+      },
+      where: {
+        type: 'token_gifts_bool_exp',
+        array: false,
+        arrayRequired: false,
+        required: false,
+      },
+    },
+    sent_gifts_aggregate: {
       distinct_on: {
         type: 'token_gifts_select_column',
         array: true,
@@ -8240,6 +8474,7 @@ export const ReturnTypes: Record<string, any> = {
     team_sel_text: 'String',
     team_selection: 'Boolean',
     token_gifts: 'token_gifts',
+    token_gifts_aggregate: 'token_gifts_aggregate',
     token_name: 'String',
     updated_at: 'timestamp',
     users: 'users',
@@ -8250,23 +8485,21 @@ export const ReturnTypes: Record<string, any> = {
     affected_rows: 'Int',
     returning: 'circles',
   },
-  create_circle_response: {
-    alloc_text: 'String',
-    auto_opt_out: 'Boolean',
-    default_opt_in: 'Boolean',
-    id: 'Int',
-    logo: 'String',
-    min_vouches: 'Int',
+  createUserResponse: {
+    address: 'String',
+    fixed_non_receiver: 'Boolean',
+    give_token_remaining: 'Int',
+    id: 'ID',
     name: 'String',
-    nomination_days_limit: 'Int',
-    only_giver_vouch: 'Boolean',
-    protocol: 'organizations',
-    protocol_id: 'Int',
-    team_sel_text: 'String',
-    team_selection: 'Boolean',
+    non_giver: 'Boolean',
+    non_receiver: 'Boolean',
+    role: 'Int',
+    starting_tokens: 'Int',
+  },
+  create_circle_response: {
+    circle: 'circles',
+    id: 'Int',
     users: 'users',
-    vouching: 'Boolean',
-    vouching_text: 'String',
   },
   epochs: {
     burns: 'burns',
@@ -8296,12 +8529,13 @@ export const ReturnTypes: Record<string, any> = {
     sender_id: 'bigint',
   },
   mutation_root: {
+    createUser: 'createUserResponse',
     create_circle: 'create_circle_response',
     update_circles: 'circles_mutation_response',
     update_circles_by_pk: 'circles',
-    update_profile_avatar: 'update_profile_avatar_output',
     update_profiles: 'profiles_mutation_response',
     update_profiles_by_pk: 'profiles',
+    upload_profile_avatar: 'upload_profile_avatar_response',
   },
   nominees: {
     address: 'String',
@@ -8398,6 +8632,7 @@ export const ReturnTypes: Record<string, any> = {
     teammates: 'teammates',
     teammates_by_pk: 'teammates',
     token_gifts: 'token_gifts',
+    token_gifts_aggregate: 'token_gifts_aggregate',
     token_gifts_by_pk: 'token_gifts',
     users: 'users',
     users_by_pk: 'users',
@@ -8425,6 +8660,7 @@ export const ReturnTypes: Record<string, any> = {
     teammates: 'teammates',
     teammates_by_pk: 'teammates',
     token_gifts: 'token_gifts',
+    token_gifts_aggregate: 'token_gifts_aggregate',
     token_gifts_by_pk: 'token_gifts',
     users: 'users',
     users_by_pk: 'users',
@@ -8457,7 +8693,114 @@ export const ReturnTypes: Record<string, any> = {
     tokens: 'Int',
     updated_at: 'timestamp',
   },
-  update_profile_avatar_output: {
+  token_gifts_aggregate: {
+    aggregate: 'token_gifts_aggregate_fields',
+    nodes: 'token_gifts',
+  },
+  token_gifts_aggregate_fields: {
+    avg: 'token_gifts_avg_fields',
+    count: 'Int',
+    max: 'token_gifts_max_fields',
+    min: 'token_gifts_min_fields',
+    stddev: 'token_gifts_stddev_fields',
+    stddev_pop: 'token_gifts_stddev_pop_fields',
+    stddev_samp: 'token_gifts_stddev_samp_fields',
+    sum: 'token_gifts_sum_fields',
+    var_pop: 'token_gifts_var_pop_fields',
+    var_samp: 'token_gifts_var_samp_fields',
+    variance: 'token_gifts_variance_fields',
+  },
+  token_gifts_avg_fields: {
+    circle_id: 'Float',
+    epoch_id: 'Float',
+    id: 'Float',
+    recipient_id: 'Float',
+    sender_id: 'Float',
+    tokens: 'Float',
+  },
+  token_gifts_max_fields: {
+    circle_id: 'bigint',
+    created_at: 'timestamp',
+    dts_created: 'timestamp',
+    epoch_id: 'Int',
+    id: 'bigint',
+    recipient_address: 'String',
+    recipient_id: 'bigint',
+    sender_address: 'String',
+    sender_id: 'bigint',
+    tokens: 'Int',
+    updated_at: 'timestamp',
+  },
+  token_gifts_min_fields: {
+    circle_id: 'bigint',
+    created_at: 'timestamp',
+    dts_created: 'timestamp',
+    epoch_id: 'Int',
+    id: 'bigint',
+    recipient_address: 'String',
+    recipient_id: 'bigint',
+    sender_address: 'String',
+    sender_id: 'bigint',
+    tokens: 'Int',
+    updated_at: 'timestamp',
+  },
+  token_gifts_stddev_fields: {
+    circle_id: 'Float',
+    epoch_id: 'Float',
+    id: 'Float',
+    recipient_id: 'Float',
+    sender_id: 'Float',
+    tokens: 'Float',
+  },
+  token_gifts_stddev_pop_fields: {
+    circle_id: 'Float',
+    epoch_id: 'Float',
+    id: 'Float',
+    recipient_id: 'Float',
+    sender_id: 'Float',
+    tokens: 'Float',
+  },
+  token_gifts_stddev_samp_fields: {
+    circle_id: 'Float',
+    epoch_id: 'Float',
+    id: 'Float',
+    recipient_id: 'Float',
+    sender_id: 'Float',
+    tokens: 'Float',
+  },
+  token_gifts_sum_fields: {
+    circle_id: 'bigint',
+    epoch_id: 'Int',
+    id: 'bigint',
+    recipient_id: 'bigint',
+    sender_id: 'bigint',
+    tokens: 'Int',
+  },
+  token_gifts_var_pop_fields: {
+    circle_id: 'Float',
+    epoch_id: 'Float',
+    id: 'Float',
+    recipient_id: 'Float',
+    sender_id: 'Float',
+    tokens: 'Float',
+  },
+  token_gifts_var_samp_fields: {
+    circle_id: 'Float',
+    epoch_id: 'Float',
+    id: 'Float',
+    recipient_id: 'Float',
+    sender_id: 'Float',
+    tokens: 'Float',
+  },
+  token_gifts_variance_fields: {
+    circle_id: 'Float',
+    epoch_id: 'Float',
+    id: 'Float',
+    recipient_id: 'Float',
+    sender_id: 'Float',
+    tokens: 'Float',
+  },
+  upload_profile_avatar_response: {
     profile: 'profiles',
     profile_id: 'Int',
   },
@@ -8481,8 +8824,10 @@ export const ReturnTypes: Record<string, any> = {
     pending_sent_gifts: 'pending_token_gifts',
     profile: 'profiles',
     received_gifts: 'token_gifts',
+    received_gifts_aggregate: 'token_gifts_aggregate',
     role: 'Int',
     sent_gifts: 'token_gifts',
+    sent_gifts_aggregate: 'token_gifts_aggregate',
     starting_tokens: 'Int',
     updated_at: 'timestamp',
   },

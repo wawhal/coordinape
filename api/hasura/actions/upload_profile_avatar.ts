@@ -5,10 +5,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { gql } from '../../../api-lib/Gql';
 import {
-  composeHasuraActionRequestBody,
-  uploadImageSchemaInput,
+  composeHasuraActionRequestBodyWithSession,
+  HasuraUserSessionVariables,
+  updateProfileAvatarInput,
 } from '../../../src/lib/zod';
 
+// TODO: this probably needs to be bigger cuz base64 is bigger and we limit the true image size to 10mb on FE
 const MAX_IMAGE_BYTES_LENGTH = 10 * 1024 * 1024; // 10MB
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -16,19 +18,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const {
     input: { object: input },
     session_variables: sessionVariables,
-  } = composeHasuraActionRequestBody(uploadImageSchemaInput).parse(req.body);
-
-  // admin can't update profile because they don't have a userId
-  if (sessionVariables.hasuraRole == 'admin') {
-    return res.status(401).json({
-      error: '401',
-      message: 'upload_image not authorized for admin role, only user role',
-    });
-  }
+  } = composeHasuraActionRequestBodyWithSession(
+    updateProfileAvatarInput,
+    HasuraUserSessionVariables
+  ).parse(req.body);
 
   try {
     // base64 decode the provided image data
-    const imageBytes = new Buffer(input.image_data, 'base64');
+    const imageBytes = Buffer.from(input.image_data_base64, 'base64');
 
     // file size check
     if (imageBytes.byteLength > MAX_IMAGE_BYTES_LENGTH) {
@@ -58,10 +55,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const avatarJpeg = await cropAndJpegAvatar(imageBytes);
     const fileName = uuidv4() + '.jpg';
 
+    // TODO: move this into a lib, add the env vars to .env/example
     const s3 = new aws.S3({
-      accessKeyId: 'ThisneedsFillingIn', // process.env.AWS_ACCESS_KEY_ID
-      secretAccessKey: 'ThisneedsFillingIn', // process.env.AWS_SECRET_ACCESS_KEY
-      endpoint: 'http://s3.localhost.localstack.cloud:4566', // process.env.AWS_ENDPOINT
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'invalid',
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || 'invalid',
+      endpoint: process.env.AWS_ENDPOINT,
     });
 
     // Setting up S3 upload parameters
@@ -134,7 +132,7 @@ async function cropAndJpegAvatar(imageBytes: Buffer) {
   return img
     .resize({
       fit: 'cover',
-      width: 240, // this is so small!
+      width: 240, // TODO: this is so small! but its what previous impl did
       height: 240,
     })
     .jpeg({

@@ -3410,13 +3410,63 @@ export const AllTypesProps: Record<string, any> = {
       required: false,
     },
   },
-  create_circle_input: {
+  createUserInput: {
     address: {
       type: 'String',
       array: false,
       arrayRequired: false,
       required: true,
     },
+    circle_id: {
+      type: 'Int',
+      array: false,
+      arrayRequired: false,
+      required: true,
+    },
+    fixed_non_receiver: {
+      type: 'Boolean',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+    give_token_remaining: {
+      type: 'Int',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+    name: {
+      type: 'String',
+      array: false,
+      arrayRequired: false,
+      required: true,
+    },
+    non_giver: {
+      type: 'Boolean',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+    non_receiver: {
+      type: 'Boolean',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+    role: {
+      type: 'Int',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+    starting_tokens: {
+      type: 'Int',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+  },
+  create_circle_input: {
     circle_name: {
       type: 'String',
       array: false,
@@ -5436,6 +5486,14 @@ export const AllTypesProps: Record<string, any> = {
     },
   },
   mutation_root: {
+    createUser: {
+      object: {
+        type: 'createUserInput',
+        array: false,
+        arrayRequired: false,
+        required: true,
+      },
+    },
     create_circle: {
       object: {
         type: 'create_circle_input',
@@ -6552,14 +6610,6 @@ export const AllTypesProps: Record<string, any> = {
         required: true,
       },
     },
-    update_profile_avatar: {
-      object: {
-        type: 'update_profile_avatar_input',
-        array: false,
-        arrayRequired: false,
-        required: true,
-      },
-    },
     update_profiles: {
       _inc: {
         type: 'profiles_inc_input',
@@ -6755,6 +6805,14 @@ export const AllTypesProps: Record<string, any> = {
       },
       pk_columns: {
         type: 'vouches_pk_columns_input',
+        array: false,
+        arrayRequired: false,
+        required: true,
+      },
+    },
+    upload_profile_avatar: {
+      object: {
+        type: 'upload_profile_avatar_input',
         array: false,
         arrayRequired: false,
         required: true,
@@ -13617,8 +13675,8 @@ export const AllTypesProps: Record<string, any> = {
       required: false,
     },
   },
-  update_profile_avatar_input: {
-    image_data: {
+  upload_profile_avatar_input: {
+    image_data_base64: {
       type: 'String',
       array: false,
       arrayRequired: false,
@@ -16075,24 +16133,22 @@ export const ReturnTypes: Record<string, any> = {
     nomination_days_limit: 'Float',
     protocol_id: 'Float',
   },
-  create_circle_response: {
-    alloc_text: 'String',
-    auto_opt_out: 'Boolean',
-    default_opt_in: 'Boolean',
-    id: 'Int',
-    logo: 'String',
-    min_vouches: 'Int',
+  createUserResponse: {
+    address: 'String',
+    fixed_non_receiver: 'Boolean',
+    give_token_remaining: 'Int',
+    id: 'ID',
     name: 'String',
-    nomination_days_limit: 'Int',
-    only_giver_vouch: 'Boolean',
-    protocol: 'organizations',
-    protocol_id: 'Int',
-    team_sel_text: 'String',
-    team_selection: 'Boolean',
+    non_giver: 'Boolean',
+    non_receiver: 'Boolean',
+    role: 'Int',
+    starting_tokens: 'Int',
+  },
+  create_circle_response: {
+    circle: 'circles',
+    id: 'Int',
     users: 'users',
     users_aggregate: 'users_aggregate',
-    vouching: 'Boolean',
-    vouching_text: 'String',
   },
   epochs: {
     burns: 'burns',
@@ -16431,6 +16487,7 @@ export const ReturnTypes: Record<string, any> = {
     user_id: 'Float',
   },
   mutation_root: {
+    createUser: 'createUserResponse',
     create_circle: 'create_circle_response',
     delete_burns: 'burns_mutation_response',
     delete_burns_by_pk: 'burns',
@@ -16518,7 +16575,6 @@ export const ReturnTypes: Record<string, any> = {
     update_pending_token_gifts_by_pk: 'pending_token_gifts',
     update_personal_access_tokens: 'personal_access_tokens_mutation_response',
     update_personal_access_tokens_by_pk: 'personal_access_tokens',
-    update_profile_avatar: 'update_profile_avatar_output',
     update_profiles: 'profiles_mutation_response',
     update_profiles_by_pk: 'profiles',
     update_teammates: 'teammates_mutation_response',
@@ -16529,6 +16585,7 @@ export const ReturnTypes: Record<string, any> = {
     update_users_by_pk: 'users',
     update_vouches: 'vouches_mutation_response',
     update_vouches_by_pk: 'vouches',
+    upload_profile_avatar: 'upload_profile_avatar_response',
   },
   nominees: {
     address: 'String',
@@ -17439,7 +17496,7 @@ export const ReturnTypes: Record<string, any> = {
     sender_id: 'Float',
     tokens: 'Float',
   },
-  update_profile_avatar_output: {
+  upload_profile_avatar_response: {
     profile: 'profiles',
     profile_id: 'Int',
   },
