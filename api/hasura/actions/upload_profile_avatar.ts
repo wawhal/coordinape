@@ -55,7 +55,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       previousAvatar = profiles_by_pk.avatar;
     }
 
-    const avatarJpeg = cropAndJpegAvatar(imageBytes);
+    const avatarJpeg = await cropAndJpegAvatar(imageBytes);
     const fileName = uuidv4() + '.jpg';
 
     const s3 = new aws.S3({
@@ -64,7 +64,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       endpoint: 'http://s3.localhost.localstack.cloud:4566', // process.env.AWS_ENDPOINT
     });
 
-    const file_id = 'cat22.jpg';
     // Setting up S3 upload parameters
     const params = {
       Bucket: 'coordinape', // TODO: use env var
@@ -79,7 +78,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // TODO: how does error typing work
       return res.status(500).json({
         error: '500',
-        message: err.message || 'Unexpected error uploading file',
+        message: err.message
+          ? 'error uploading to s3: ' + err.message
+          : 'Unexpected error uploading file',
       });
     }
 
@@ -90,7 +91,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const mutationResult = await gql.q('mutation')({
       update_profiles_by_pk: [
         {
-          _set: { avatar: file_id },
+          _set: { avatar: fileName },
           pk_columns: { id: sessionVariables.hasuraProfileId },
         },
         {
@@ -100,6 +101,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         },
       ],
     });
+    console.log(
+      'did the avatar mutation for' + sessionVariables.hasuraProfileId
+    );
+    console.log(mutationResult);
     if (mutationResult.update_profiles_by_pk) {
       if (previousAvatar) {
         //delete the previous file from s3
@@ -109,6 +114,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             Key: previousAvatar,
           })
           .promise();
+        console.log('deleted previous!');
       }
       return res.status(200).json({
         profile_id: mutationResult.update_profiles_by_pk.id,
@@ -125,7 +131,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
 async function cropAndJpegAvatar(imageBytes: Buffer) {
   const img = sharp(imageBytes);
-  return await img
+  return img
     .resize({
       fit: 'cover',
       width: 240, // this is so small!

@@ -4,6 +4,7 @@ import {
   InputType,
   OperationOptions,
   chainOptions,
+  $,
 } from 'lib/gql/zeusUser';
 import {
   useTypedQuery as _useTypedQuery,
@@ -80,13 +81,11 @@ export function useCircleIdForEpoch(epochId: number) {
   }).data?.epochs_by_pk?.circle_id;
 }
 
-export function useUploadProfileAvatar(image_data_base64: string) {
+export function useUploadProfileAvatar() {
   // TODO: i don't know what to do with this key, is it supposed to be unique?
   return useTypedMutation('update-profile-X', {
-    // not sure why object: is here or needed
-    // TODO: i want this image_data to be passed in when .mutate() is called on this, but I don't know
     update_profile_avatar: [
-      { object: { image_data: image_data_base64 } },
+      { object: { image_data: $`image_data_base64` } },
       { profile_id: true },
     ],
   });
