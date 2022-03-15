@@ -42,7 +42,7 @@ export const AdminUserModal = ({
   open,
 }: {
   user?: IUser;
-  open: boolean;
+  open?: boolean;
   onClose: () => void;
 }) => {
   const { account } = useWeb3React();
@@ -109,7 +109,7 @@ export const AdminUserModal = ({
         }) => (
           <FormModal
             onClose={onClose}
-            open={open}
+            open={open === undefined ? true : open}
             title={user ? `Edit ${user.name}` : 'Create User'}
             onSubmit={handleSubmit}
             submitDisabled={!changedOutput}
