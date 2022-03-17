@@ -5,12 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { makeStyles, Button } from '@material-ui/core';
 
-import {
-  FormCaptcha,
-  FormTextField,
-  ApeTextField,
-  FormAutocomplete,
-} from 'components';
+import { FormTextField, ApeTextField, FormAutocomplete } from 'components';
 import CreateCircleForm from 'forms/CreateCircleForm';
 import { useApiWithProfile, useApiBase } from 'hooks';
 import { DiscordIcon } from 'icons';
@@ -138,24 +133,9 @@ export const SummonCirclePage = () => {
       <h2 className={classes.title}>Create a Circle</h2>
       <CreateCircleForm.FormController
         source={undefined}
-        submit={async ({
-          captcha_token,
-          research_org_link,
-          research_contact,
-          ...params
-        }) => {
+        submit={async ({ ...params }) => {
           try {
-            const newCircle = await createCircle(
-              myAddress,
-              { ...params },
-              captcha_token,
-              JSON.stringify({
-                address: myAddress,
-                research_org_link,
-                research_contact,
-                ...params,
-              })
-            );
+            const newCircle = await createCircle({ ...params });
             selectCircle(newCircle.id);
             navigate({
               pathname: paths.getAdminPath(),
@@ -217,7 +197,7 @@ export const SummonCirclePage = () => {
             <div className={classes.bodyInner}>
               <div className={classes.twoColumnGrid}>
                 <FormTextField
-                  {...fields.research_contact}
+                  {...fields.contact}
                   fullWidth
                   label="Circle Point of Contact"
                   placeholder="Discord #0000, Telegram, Twitter or Email "
@@ -246,7 +226,6 @@ export const SummonCirclePage = () => {
                 </div>
               </div>
             </div>
-            <FormCaptcha {...fields.captcha_token} error={false} />
             <Button
               className={classes.saveButton}
               variant="contained"
