@@ -8,7 +8,7 @@ import CirclesPage from 'pages/CirclesPage';
 import CreateCirclePage from 'pages/CreateCirclePage';
 import DefaultPage from 'pages/DefaultPage';
 import DistributePage from 'pages/DistributePage';
-import HistoryPage from 'pages/HistoryPage';
+import { NewHistoryPage as HistoryPage } from 'pages/HistoryPage';
 import IntegrationCallbackPage from 'pages/IntegrationCallbackPage';
 import ProfilePage from 'pages/ProfilePage';
 import VaultsPage from 'pages/VaultsPage';
