@@ -105,3 +105,20 @@ export const logout = async (): Promise<boolean> => {
   }
   return false;
 };
+
+export async function deleteEpoch(circleId: number, epochId: number) {
+  const { deleteEpoch } = await client.mutate({
+    deleteEpoch: [
+      {
+        payload: {
+          id: epochId,
+          circle_id: circleId,
+        },
+      },
+      {
+        success: true,
+      },
+    ],
+  });
+  return deleteEpoch;
+}

@@ -177,13 +177,6 @@ export class APIService {
     return response.data as IApiEpoch;
   };
 
-  deleteEpoch = async (circleId: number, epochId: number): Promise<any> => {
-    const response = await this.axios.delete(
-      `/v2/${circleId}/admin/epoches/${epochId}`
-    );
-    return response.data;
-  };
-
   createUser = async (
     circleId: number,
     params: PostUsersParam
