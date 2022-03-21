@@ -205,6 +205,38 @@ export const AllTypesProps: Record<string, any> = {
       },
     },
   },
+  CreateEpochInput: {
+    circle_id: {
+      type: 'Int',
+      array: false,
+      arrayRequired: false,
+      required: true,
+    },
+    days: {
+      type: 'Int',
+      array: false,
+      arrayRequired: false,
+      required: true,
+    },
+    grant: {
+      type: 'Float',
+      array: false,
+      arrayRequired: false,
+      required: false,
+    },
+    repeat: {
+      type: 'Int',
+      array: false,
+      arrayRequired: false,
+      required: true,
+    },
+    start_date: {
+      type: 'timestamptz',
+      array: false,
+      arrayRequired: false,
+      required: true,
+    },
+  },
   CreateNomineeInput: {
     address: {
       type: 'String',
@@ -7119,6 +7151,14 @@ export const AllTypesProps: Record<string, any> = {
     createCircle: {
       payload: {
         type: 'CreateCircleInput',
+        array: false,
+        arrayRequired: false,
+        required: true,
+      },
+    },
+    createEpoch: {
+      payload: {
+        type: 'CreateEpochInput',
         array: false,
         arrayRequired: false,
         required: true,
@@ -19477,6 +19517,10 @@ export const ReturnTypes: Record<string, any> = {
   DeleteEpochResponse: {
     success: 'Boolean',
   },
+  EpochResponse: {
+    epoch: 'epochs',
+    id: 'ID',
+  },
   LogoutResponse: {
     id: 'Int',
     profile: 'profiles',
@@ -20591,6 +20635,7 @@ export const ReturnTypes: Record<string, any> = {
   mutation_root: {
     adminUpdateUser: 'UserResponse',
     createCircle: 'CreateCircleResponse',
+    createEpoch: 'EpochResponse',
     createNominee: 'CreateNomineeResponse',
     createUser: 'UserResponse',
     deleteEpoch: 'DeleteEpochResponse',
